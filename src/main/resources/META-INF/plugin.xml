@@ -1,0 +1,29 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>ru.sber.qa.demo</id>
+    <name>Demo</name>
+    <category>Test Tools</category>
+
+    <vendor email="poljakovag@mail.ru">Polyakov Aleksandr</vendor>
+    <description><![CDATA[
+    Это тестовый проект для демострации генерации автотестов через GigaChat
+  ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
+    <depends>com.intellij.modules.xml</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+
+        <fileBasedIndex implementation="ru.sber.qa.llmdemo.index.TmsIndexExtension"/>
+
+        <fileEditorProvider implementation="ru.sber.qa.llmdemo.TmsTestEditorProvider"/>
+        <fileIconProvider implementation="ru.sber.qa.llmdemo.icon.TmsIconsProvider"/>
+
+        <notificationGroup displayType="BALLOON" id="TmsMessage" bundle="messages.TmsBundle"/>
+        <projectConfigurable nonDefaultProject="true" parentId="tools"
+                             dynamic="true"
+                             instance="ru.sber.qa.llmdemo.settings.AiSettingsConfigurable"
+                             id="ru.sber.qa.llmdemo.settings.AiSettingsConfigurable" displayName="My Plugin LLM Settings"/>
+    </extensions>
+</idea-plugin>

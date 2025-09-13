@@ -1,0 +1,81 @@
+buildscript {
+    dependencies {
+        classpath 'org.jetbrains.intellij.platform:intellij-platform-gradle-plugin:2.3.0'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'groovy'
+    id "idea"
+    id 'maven-publish'
+}
+
+apply plugin: "org.jetbrains.intellij.platform"
+
+
+repositories {
+    mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+    }
+}
+
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+dependencies {
+    compileOnly("org.projectlombok:lombok:1.18.34")
+    annotationProcessor("org.projectlombok:lombok:1.18.34")
+    implementation("chat.giga:langchain4j-gigachat:0.1.13")
+    implementation("org.commonmark:commonmark:0.25.1")
+    implementation("org.json:json:20250107")
+
+    intellijPlatform {
+        intellijIdeaCommunity intellijIdeaVersion, false
+        javaCompiler()
+        instrumentationTools()
+        bundledPlugins 'com.intellij.java'
+
+    }
+}
+
+project.group = projectGroup
+var isSnapshot = snapshotFlag.toBoolean()
+project.version = currentProjectVersion
+if (isSnapshot) {
+    project.version += "-SNAPSHOT"
+}
+
+intellijPlatform {
+    projectName = project.name
+    instrumentCode = true
+    pluginConfiguration {
+        ideaVersion {
+            sinceBuild = "251"
+            untilBuild = "251.*"
+        }
+    }
+    autoReload = true
+    buildSearchableOptions = false
+}
+
+
+initializeIntellijPlatformPlugin {
+    latestPluginVersion = '2.3.0'
+}
+
+println("  Project group:   ${project.group}")
+println("  Root project:   ${rootProject.name}")
+println("  Project name:   ${project.name}")
+println("  Project version:   ${project.version}")
+println("  Project snapshotFlag:   ${project.property("snapshotFlag")}")
+
+buildPlugin {
+    archiveBaseName.set(rootProject.name)
+}
