@@ -26,7 +26,7 @@
                              instance="ru.sber.qa.llmdemo.settings.AiSettingsConfigurable"
                              id="ru.sber.qa.llmdemo.settings.AiSettingsConfigurable" displayName="My Plugin LLM Settings"/>
 
-        <toolWindow factoryClass="ru.sber.qa.llmdemo.TmsToolWindowFactory" id="ru.sber.qa.llmdemo.TmsToolWindowFactory"
+        <toolWindow factoryClass="ru.sber.qa.llmdemo.TmsToolWindowFactory" id="Tests"
                     secondary="true" icon="ru.sber.qa.llmdemo.icon.TmsIcons.TMS_ICON" anchor="right"
          />
     </extensions>

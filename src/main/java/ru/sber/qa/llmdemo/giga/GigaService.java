@@ -84,6 +84,8 @@ public final class GigaService {
                 .defaultChatRequestParameters(GigaChatChatRequestParameters.builder()
                         .modelName(ModelName.GIGA_CHAT_PRO)
                         .build())
+                .connectTimeout(60)
+                .readTimeout(60)
                 .authClient(AuthClient.builder()
                         .withOAuth(AuthClientBuilder.OAuthBuilder.builder()
                                 .scope(Scope.GIGACHAT_API_PERS)
@@ -305,7 +307,7 @@ public final class GigaService {
     }
 
 
-    protected Collection<TextSegment> findSimilarSteps(List<Step> steps) {
+    private Collection<TextSegment> findSimilarSteps(List<Step> steps) {
         return steps.stream()
                 .flatMap(step -> stepSearcher.findSimilar(step, AutoStepType.Junit).stream())
                 .collect(Collectors.toUnmodifiableSet());
