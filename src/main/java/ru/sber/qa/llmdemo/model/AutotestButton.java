@@ -101,7 +101,6 @@ public class AutotestButton extends JButton {
                         if (generatedTest != null) {
                             tmsTest.setTestProject(generatedTest);
                         } else {
-                            log.error("Ошибка при создании автотеста: generatedTest is null");
                             Messages.showErrorDialog("Что-то пошло не так при создании автотеста", "Error");
                         }
                         getOpenTest();

@@ -1,14 +1,14 @@
 package ru.sber.qa.llmdemo.dto;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @Data
-@Builder
+@NoArgsConstructor
 public class Test {
 
     private String owner;
@@ -31,5 +31,4 @@ public class Test {
     private String name;
     private String key;
     private String status;
-
 }

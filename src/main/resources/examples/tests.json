@@ -1,0 +1,100 @@
+[
+  {
+    "owner": "qa_team1",
+    "updatedBy": "qa_lead",
+    "customFields": {
+      "Команда": "Payments Core",
+      "АС": "Платежный шлюз",
+      "Функциональная принадлежность": "Интеграция",
+      "Согласование с аналитиком": "Согласовано",
+      "Тип теста": "ИФТ",
+      "Автоматизирован": "Да",
+      "Модуль": "payment-gateway",
+      "Вид тестирования": "Регресс"
+    },
+    "updatedOn": "2023-09-12T10:25:41.000Z",
+    "precondition": "Сервис payment-gateway развернут на СТ. В Kafka-топике tr.payment.requests отсутствуют незакрытые транзакции.",
+    "majorVersion": 1,
+    "priority": "High",
+    "createdOn": "2023-09-01T12:00:00.000Z",
+    "labels": ["Smoke"],
+    "objective": "Проверить корректность обработки успешного платежа через шлюз",
+    "component": "payment-gateway",
+    "projectKey": "PAY",
+    "folder": "/Регресс/Платежи/Шлюз",
+    "createdBy": "qa_team1",
+    "latestVersion": true,
+    "testScript": {
+      "id": 400001,
+      "type": "STEP_BY_STEP",
+      "steps": [
+        {
+          "testData": "{ \"amount\": 1000, \"currency\": \"RUB\", \"cardNum\": \"4111111111111111\" }",
+          "expectedResult": "Сообщение отправлено в топик tr.payment.requests",
+          "description": "Отправить запрос на проведение платежа в payment-gateway",
+          "index": 0,
+          "id": 200001
+        },
+        {
+          "expectedResult": "В топике tr.payment.responses найден ответ со статусом SUCCESS",
+          "description": "Проверить, что ответ получен с корректным статусом",
+          "index": 1,
+          "id": 200002
+        }
+      ]
+    },
+    "lastTestResultStatus": "Pass",
+    "name": "Успешный платеж через payment-gateway",
+    "key": "PAY-T1",
+    "status": "Актуальный"
+  },
+  {
+    "owner": "qa_team2",
+    "updatedBy": "qa_lead",
+    "customFields": {
+      "Команда": "Detect",
+      "АС": "Сервис",
+      "Функциональная принадлежность": "Обработка",
+      "Согласование с аналитиком": "На согласовании",
+      "Тип теста": "СТ",
+      "Автоматизирован": "Да",
+      "Модуль": "service",
+      "Вид тестирования": "Регресс"
+    },
+    "updatedOn": "2023-09-13T14:42:20.000Z",
+    "precondition": "В БД service отсутствуют активные правила для карты test-card.",
+    "majorVersion": 1,
+    "priority": "Medium",
+    "createdOn": "2023-09-05T09:30:00.000Z",
+    "labels": ["Regression"],
+    "objective": "Проверить блокировку подозрительной транзакции по правилу превышения лимита",
+    "component": "service",
+    "projectKey": "FRD",
+    "folder": "/Регресс/Лимиты",
+    "createdBy": "qa_team2",
+    "latestVersion": true,
+    "testScript": {
+      "id": 400002,
+      "type": "STEP_BY_STEP",
+      "steps": [
+        {
+          "testData": "{ \"amount\": 500000, \"currency\": \"RUB\", \"cardNum\": \"5555555555554444\" }",
+          "expectedResult": "Транзакция отклонена системой",
+          "description": "Отправить запрос на проведение транзакции выше лимита",
+          "index": 0,
+          "id": 200003
+        },
+        {
+          "expectedResult": "В топике alerts найдено сообщение с eventType=LIMIT_EXCEEDED",
+          "description": "Проверить, что сервис сгенерировал событие",
+          "index": 1,
+          "id": 200004
+        }
+      ]
+    },
+    "lastTestResultStatus": "Fail",
+    "name": "Блокировка транзакции при превышении лимита",
+    "key": "FRD-T5",
+    "status": "Актуальный"
+  }
+]

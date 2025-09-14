@@ -99,4 +99,9 @@ public class TmsTest {
         return Objects.hash(key, filePath, offset);
     }
 
+
+    @Override
+    public String toString() {
+        return test.getName();
+    }
 }

@@ -254,7 +254,7 @@ public class TestSearcher {
     }
 
     private JSONObject generateMetadata(String sourceType, String codeType, String text) {
-        memory.add(PromptTemplate.from(ResourcesUtils.getPrompt("prompts/test_analysis.md")).apply(Map.of("testType", sourceType)).toSystemMessage());
+        memory.add(PromptTemplate.from(ResourcesUtils.getResources("prompts/test_analysis.md")).apply(Map.of("testType", sourceType)).toSystemMessage());
         var userMessage = UserMessage.from(
                 """
                         ```%s

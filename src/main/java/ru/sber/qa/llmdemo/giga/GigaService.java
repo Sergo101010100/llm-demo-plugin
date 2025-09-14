@@ -196,7 +196,7 @@ public final class GigaService {
 
         indicateProgress(indicator, "Генерация Java-теста", 4 / totalFraction);
 
-        String firstGenPrompt = ResourcesUtils.getPrompt("prompts/first_generation.md");
+        String firstGenPrompt = ResourcesUtils.getResources("prompts/first_generation.md");
 
         String firstGenMessage = PromptTemplate.from(firstGenPrompt).apply(
                 Map.of("manualSteps", StepUtils.formatManualSteps(criticSteps),
@@ -222,7 +222,7 @@ public final class GigaService {
 
         String reviewedTest = FilteringClassLoader.runWithClassLoader(() -> {
             //делаем доп ревью созданного теста
-            String reviewPrompt = ResourcesUtils.getPrompt("prompts/first_generation.md");
+            String reviewPrompt = ResourcesUtils.getResources("prompts/review_first_gen.md");
             return agent.refineGeneratedTest(
                     tmsTest.getKey(),
                     PromptTemplate.from(reviewPrompt).apply(Map.of("additional", additional)).text(),
@@ -278,7 +278,8 @@ public final class GigaService {
             steps.append(step.toAgentString());
         }
 
-        UserMessage criticPrompt = PromptTemplate.from(ResourcesUtils.getPrompt("prompts/handle_test.md")).apply(Map.of("handtest", steps)).toUserMessage();
+        UserMessage criticPrompt = PromptTemplate.from(ResourcesUtils.getResources("prompts/handle_test.md"))
+                .apply(Map.of("handtest", steps)).toUserMessage();
         String newTest = model.chat(criticPrompt).aiMessage().text();
         JSONArray refactoredTest;
         try {
@@ -308,10 +309,6 @@ public final class GigaService {
         return steps.stream()
                 .flatMap(step -> stepSearcher.findSimilar(step, AutoStepType.Junit).stream())
                 .collect(Collectors.toUnmodifiableSet());
-    }
-
-    public Collection<TextSegment> findSimilarStep(String step, AutoStepType type) {
-        return stepSearcher.findSimilar(step, type);
     }
 
     private String findSimilarTest(List<Step> manualSteps) {

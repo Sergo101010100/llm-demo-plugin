@@ -12,7 +12,8 @@ import org.jdesktop.swingx.VerticalLayout;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.sber.qa.llmdemo.dto.Test;
+import ru.sber.qa.llmdemo.index.TmsTest;
+import ru.sber.qa.llmdemo.model.AutotestButton;
 import ru.sber.qa.llmdemo.model.TestStepModel;
 
 import javax.swing.*;
@@ -22,13 +23,15 @@ import java.awt.*;
  * file editor для отображения ручных тестов
  */
 public class TmsTestFileEditor extends BaseRemoteFileEditor {
-    private final Test test;
+    private final TmsTest tmsTest;
     private final JComponent myPanel;
     private final VirtualFile virtualFile;
+    private final Project project;
 
-    public TmsTestFileEditor(@NotNull Project project, @NotNull Test test, @NotNull VirtualFile virtualFile) {
+    public TmsTestFileEditor(@NotNull Project project, @NotNull TmsTest tmsTest, @NotNull VirtualFile virtualFile) {
         super(project);
-        this.test = test;
+        this.tmsTest = tmsTest;
+        this.project = project;
         this.virtualFile = virtualFile;
         this.myPanel = createEditorPanel();
     }
@@ -38,10 +41,16 @@ public class TmsTestFileEditor extends BaseRemoteFileEditor {
 
         JPanel general = new JPanel();
         general.setLayout(new VerticalLayout());
-        JBLabel key = new JBLabel(test.getKey());
+
+        AutotestButton button = new AutotestButton(project, tmsTest);
+        JPanel buttonPanel = new JPanel(new BorderLayout());
+        buttonPanel.add(button, BorderLayout.WEST);
+        general.add(buttonPanel);
+
+        JBLabel key = new JBLabel(tmsTest.getKey());
         key.setBorder(BorderFactory.createTitledBorder("Ключ теста"));
         general.add(key);
-        JBTextField testName = new JBTextField(test.getName());
+        JBTextField testName = new JBTextField(tmsTest.getTest().getName());
         testName.setEnabled(false);
         testName.setBorder(BorderFactory.createTitledBorder("Имя теста"));
         general.add(testName);
@@ -58,7 +67,7 @@ public class TmsTestFileEditor extends BaseRemoteFileEditor {
     }
 
     private JBTable getStep() {
-        JBTable table = new JBTable(new TestStepModel(test.getTestScript().getSteps()));
+        JBTable table = new JBTable(new TestStepModel(tmsTest.getTest().getTestScript().getSteps()));
         table.setAutoResizeMode(JBTable.AUTO_RESIZE_ALL_COLUMNS);
         return table;
     }

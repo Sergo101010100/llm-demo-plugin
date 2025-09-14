@@ -8,7 +8,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import ru.sber.qa.llmdemo.dto.Test;
+import ru.sber.qa.llmdemo.index.TmsTest;
 
 public class TmsTestEditorProvider implements FileEditorProvider, DumbAware {
 
@@ -19,7 +19,7 @@ public class TmsTestEditorProvider implements FileEditorProvider, DumbAware {
 
     @Override
     public @NotNull FileEditor createEditor(@NotNull Project project, @NotNull VirtualFile virtualFile) {
-        Test test = ((TmsTestVirtualFile) virtualFile).getTest();
+        TmsTest test = ((TmsTestVirtualFile) virtualFile).getTest();
         return new TmsTestFileEditor(project,test,virtualFile);
     }
 

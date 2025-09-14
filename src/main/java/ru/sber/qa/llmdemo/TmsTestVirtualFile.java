@@ -2,13 +2,13 @@ package ru.sber.qa.llmdemo;
 
 import com.intellij.testFramework.LightVirtualFile;
 import lombok.Getter;
-import ru.sber.qa.llmdemo.dto.Test;
+import ru.sber.qa.llmdemo.index.TmsTest;
 
 @Getter
 public class TmsTestVirtualFile extends LightVirtualFile {
-    private final Test test;
+    private final TmsTest test;
 
-    public TmsTestVirtualFile(Test test) {
+    public TmsTestVirtualFile(TmsTest test) {
         super(test.getKey());
         this.test = test;
     }

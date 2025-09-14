@@ -4,14 +4,12 @@ import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Properties;
 
 @UtilityClass
 public class ResourcesUtils {
 
-    public static String getPrompt(String path) {
+    public static String getResources(String path) {
         try (InputStream inputStream = ResourcesUtils.class.getClassLoader().getResourceAsStream(path)) {
             return new String(inputStream.readAllBytes());
         } catch (IOException e) {
